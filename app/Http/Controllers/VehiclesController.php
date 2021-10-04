@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +56,15 @@ class VehiclesController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = new User;
+        $vehicle = Vehicle::findOrFail($id);
+
+        if(!$user->isOwner($vehicle)) {
+            return response()
+                ->json('', 401);
+        }
+        
+        return response()->json($vehicle);
     }
 
     /**
@@ -67,7 +76,17 @@ class VehiclesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = new User;
+        $vehicle = Vehicle::findOrFail($id);
+
+        if(!$user->isOwner($vehicle)) {
+            return response()
+                ->json('', 401);
+        }
+
+        $vehicle->update($request->all());
+        
+        return response()->json($vehicle);
     }
 
     /**
@@ -78,6 +97,16 @@ class VehiclesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = new User;
+        $vehicle = Vehicle::findOrFail($id);
+
+        if(!$user->isOwner($vehicle)) {
+            return response()
+                ->json('', 401);
+        }
+
+        $vehicle->delete();
+        
+        return response()->json($vehicle);
     }
 }
