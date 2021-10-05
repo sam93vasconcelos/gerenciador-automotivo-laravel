@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\VehiclesController;
+use App\Http\Controllers\SuppliesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,4 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::resource('/vehicles', VehiclesController::class)->middleware('auth:sanctum');
+Route::post('/supplies', [SuppliesController::class, 'store'])->middleware('auth:sanctum');
