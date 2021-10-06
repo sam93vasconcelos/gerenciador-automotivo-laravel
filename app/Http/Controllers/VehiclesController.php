@@ -54,8 +54,10 @@ class VehiclesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Vehicle $vehicle)
+    public function show($id)
     {
+        $vehicle = Vehicle::with('supplies')->findOrFail($id);
+        
         $this->authorize('view', $vehicle);
         
         return response()->json($vehicle);
