@@ -54,15 +54,9 @@ class VehiclesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Vehicle $vehicle)
     {
-        $user = new User;
-        $vehicle = Vehicle::findOrFail($id);
-
-        if(!$user->isOwner($vehicle)) {
-            return response()
-                ->json('', 401);
-        }
+        $this->authorize('view', $vehicle);
         
         return response()->json($vehicle);
     }
@@ -74,15 +68,9 @@ class VehiclesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Vehicle $vehicle)
     {
-        $user = new User;
-        $vehicle = Vehicle::findOrFail($id);
-
-        if(!$user->isOwner($vehicle)) {
-            return response()
-                ->json('', 401);
-        }
+        $this->authorize('update', $vehicle);
 
         $vehicle->update($request->all());
         
@@ -95,15 +83,9 @@ class VehiclesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Vehicle $vehicle)
     {
-        $user = new User;
-        $vehicle = Vehicle::findOrFail($id);
-
-        if(!$user->isOwner($vehicle)) {
-            return response()
-                ->json('', 401);
-        }
+        $this->authorize('delete', $vehicle);
 
         $vehicle->delete();
         
