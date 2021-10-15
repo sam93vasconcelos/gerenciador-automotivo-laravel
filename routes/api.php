@@ -28,4 +28,4 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::resource('/vehicles', VehiclesController::class)->middleware('auth:sanctum');
-Route::post('/supplies', [SuppliesController::class, 'store'])->middleware('auth:sanctum');
+Route::resource('/supplies', SuppliesController::class)->middleware('auth:sanctum');

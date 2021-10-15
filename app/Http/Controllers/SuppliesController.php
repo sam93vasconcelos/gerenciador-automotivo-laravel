@@ -68,8 +68,14 @@ class SuppliesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Supply $supply)
     {
-        //
+        $vehicle = Vehicle::findOrFail($supply->vehicle_id);
+        
+        $this->authorize('view', $vehicle);
+
+        $supply->delete();
+
+        return response()->json('', 200);
     }
 }
