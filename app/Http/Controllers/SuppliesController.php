@@ -24,6 +24,14 @@ class SuppliesController extends Controller
             'total' => 'required',
             'date' => 'required',
             'vehicle_id' => 'required',
+        ], 
+        [
+            'km.required' => 'Preencha a quilometragem!',
+            'price.required' => 'Preencha o valor por litro!',
+            'liters.required' => 'Preencha a quantidade de litros!',
+            'total.required' => 'Preencha o total!',
+            'date.required' => 'Preencha a data!',
+            'vehicle_id.required' => 'Nenhum veículo selecionado!'
         ]);
 
         $user = new User;
@@ -57,9 +65,15 @@ class SuppliesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Supply $supply)
     {
-        //
+        $vehicle = Vehicle::findOrFail($supply->vehicle_id);
+        
+        $this->authorize('update', $vehicle);
+
+        $supply->update($request->all());
+
+        return response()->json('', 200);
     }
 
     /**
@@ -72,7 +86,7 @@ class SuppliesController extends Controller
     {
         $vehicle = Vehicle::findOrFail($supply->vehicle_id);
         
-        $this->authorize('view', $vehicle);
+        $this->authorize('delete', $vehicle);
 
         $supply->delete();
 
