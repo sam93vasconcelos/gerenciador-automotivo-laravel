@@ -25,6 +25,9 @@ Route::prefix('auth')->group(function () {
 
 	Route::post('/password/email', 'App\Http\Controllers\Api\Auth\AuthController@sendPasswordResetLinkEmail')->middleware('throttle:5,1')->name('password.email');
 	Route::post('/password/reset', 'App\Http\Controllers\Api\Auth\AuthController@resetPassword')->name('password.reset');
+	Route::get('/password/reset', function(Request $request) {
+		return redirect('http://localhost:3000/reset/'.$request->token.'/'.$request->email);
+	});
 });
 
 Route::resource('/vehicles', VehiclesController::class)->middleware('auth:sanctum');
